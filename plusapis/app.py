@@ -16,7 +16,12 @@ app = Flask(__name__)
 CORS(app)
 
 
-connstring = """Driver={SQL Server};
+# connstring = """Driver={SQL Server};
+#             Server=190.110.196.148;
+#             Database=generalm;
+#             UID=sa;
+#             PWD=13XBnone;"""
+connstring = """Driver={/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.2.so.0.1};
             Server=190.110.196.148;
             Database=generalm;
             UID=sa;
