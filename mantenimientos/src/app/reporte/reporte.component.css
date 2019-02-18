@@ -1,0 +1,9 @@
+.mat-table {
+    display: table;
+    width: 100%;
+}
+
+.mat-row:hover {
+    background-color: #999;
+    cursor: pointer;
+  }

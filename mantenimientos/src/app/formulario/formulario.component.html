@@ -1,0 +1,299 @@
+<!-- The content below is only a placeholder and can be replaced. -->
+<div style="text-align:center">
+  
+  <mat-card>
+    <mat-card-subtitle>
+      <mat-grid-list cols="4" rowHeight="5:1" [style.border]="'2px solid #ddd'">
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Núm. de orden"  [(ngModel)]="numeroorden"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Tipo comercial"  [(ngModel)]="codigotipocomercial" />
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Matrícula"  [(ngModel)]="matricula" />
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Matriculación"  [(ngModel)]="matriculacion"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Número de bastidor " (keydown)="infochasis($event)" [(ngModel)]="numerobastidor"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="LDM"  [(ngModel)]="ldm"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Kilometraje"  [(ngModel)]="kilometraje"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Asesor del Servicio"  [(ngModel)]="asesorservicio"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Tipo comercial"  [(ngModel)]="tipocomercial"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="LDC"  [(ngModel)]="ldc"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Año de modelos"  [(ngModel)]="aniomodelo"/>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <input matInput required placeholder="Lugar"  [(ngModel)]="lugar"/>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-subtitle>
+    <mat-card-content>
+      <mat-card>
+        <mat-card-subtitle>
+          El almacenamiento en el vehículo / Showroom
+        </mat-card-subtitle>
+        <mat-card-content>
+          <mat-grid-list cols="6" rowHeight="2:1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'" [colspan]="3">
+              Además para vehículos usados: verificar el estado de carga de la
+              batería (ver procedimientos en "Por lo menos cada 40 días").
+              Documentar el día de entrega como referencia para todas las
+              medidas de condición de carga.
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b1r1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button  value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+          </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c1">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+
+            <mat-grid-tile [style.border]="'2px solid #ddd'" [colspan]="3">
+              Etiqueta de eficiencia energética: verificar la existencia y es
+              consistente con el vehículo.
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b1r2">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c2">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" [colspan]="3">
+              Tablero de instrumentos, los asientos y las puertas-objetos:
+              Retire el papel y otros objetos que no se utilizan exclusivamente
+              para la protección de superficies (excepto los vehículos 0 km).
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b1r3">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c3">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" [colspan]="3">
+              Alzar los parasoles.
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b1r4">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c4">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-subtitle>
+          Como mínimo semanalmente
+        </mat-card-subtitle>
+        <mat-card-content>
+          <mat-grid-list cols="6" rowHeight="4:1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'" [colspan]="3">
+              Limpiar/lavar el vehículo alcanzado por materiales agresivos (por ejemplo, excremento de aves, polvo industrial, polen de plantas, etc.) .
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b2r1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c5">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" [colspan]="3">
+              Vehículos con aire acondicionado: abrir todos los difusores de aire/ventilación en el panel de instrumentos y colocar el ventilador al máximo .
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b2r2">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c6">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-subtitle>
+          Por lo menos cada 40 días
+        </mat-card-subtitle>
+        <mat-card-content>
+          <mat-grid-list cols="6" rowHeight="1:1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'"  [colspan]="3">
+              POSIBILIDAD 1: Verifique el estado de carga de la batería. Con un valor <"80" (que corresponde al 80% del estado de carga) o una indicación de tensión <"12,5" (que corresponde a la tensión de reposo de 12,5V): cargar la batería inmediatamente. Con un valor <"10" o una indicación de tensión <"11,6": sustituir la batería. En el caso de una batería totalmente descargada la sustitución sólo se debe hacer antes de entregar al cliente. 
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b3r1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c7">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'"  [colspan]="3">
+              POSIBILIDAD 2: Medir tensión de reposo de la batería: 2 horas después que el último "consumidor" haya estado activo y 12 horas después de la última operación del motor. Con una tensión de reposo medida entre 11,6 V y 12,5 V: cargar la batería inmediatamente. Con una tensión de reposo inferior a 11,6 V: sustituir la batería. En el caso de una batería totalmente descargada la sustitución sólo se debe hacer antes de entregar al cliente.
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b3r2">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c8">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-subtitle>
+          Por lo menos cada tres meses
+        </mat-card-subtitle>
+        <mat-card-content>
+          <mat-grid-list cols="6" rowHeight="4:1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'"  [colspan]="3">
+              Los frenos de disco: compruebe si hay corrosión, si mueven y el freno necesario mientras el vehículo para discos de limpieza 
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b4r1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c9">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'"  [colspan]="3">
+              Neumáticos: presión correcta para la carga y la rueda de repuesto con una carga máxima 
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b4r2">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c10">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-subtitle>
+          O cuidado programa para los vehículos en sala de exposición showroom
+        </mat-card-subtitle>
+        <mat-card-content>
+          <mat-grid-list cols="6" rowHeight="2:1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'" [colspan]="3">
+              Verificación del estado de carga de la batería, POSIBILIDAD 1: la conexión permanente de un cargador liberado para el funcionamiento de no-break con una corriente de carga de 30 A o superior. 
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b5r1">
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c11">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" [colspan]="3">
+              Verificación del estado de carga de la batería, POSIBILIDAD 2: realizar la prueba de batería cada 2 días (ver procedimientos en "Por lo menos cada 40 días"). 
+            </mat-grid-tile>
+            <mat-radio-group [(ngModel)]="b5r2">
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='true'>Ok Realizado</mat-radio-button>
+            </mat-grid-tile>
+            <mat-grid-tile [style.border]="'2px solid #ddd'">
+              <mat-radio-button value='false'>No Ok</mat-radio-button>
+            </mat-grid-tile>
+            </mat-radio-group>
+            <mat-grid-tile [style.border]="'2px solid #ddd'" >
+              <mat-checkbox [(ngModel)]="c12">Subsanada</mat-checkbox>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+    <mat-card-footer>
+      OK/realizado = OK  <mat-divider [vertical]="true"></mat-divider>   No OK = No es correcto, observe las notas de reparación <mat-divider [vertical]="true"></mat-divider>   Subsanada = Se ha subsanado la avería 
+    </mat-card-footer>
+  </mat-card>
+  <mat-divider></mat-divider>
+  <div>
+    <button mat-flat-button color="primary" (click)="enviar()">Guardar</button>
+  </div>
+</div>
