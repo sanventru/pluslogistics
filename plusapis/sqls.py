@@ -1,7 +1,10 @@
-campos_mantenimientos = "numero_orden,numero_bastidor,tipo_comercial,codigo_tipo_comercial,ldm,ldc,matricula,kilometraje,anio_modelo,matriculacion,asesor_servicio,fecha"
+campos_mantenimientos = "numero_orden,numero_bastidor,tipo_comercial,codigo_tipo_comercial,ldm,ldc,matricula,kilometraje,anio_modelo,matriculacion,asesor_servicio,fecha,lugar,indicador1,cumple1,subsanada1,indicador2,cumple2,subsanada2,indicador3,cumple3,subsanada3,indicador4,cumple4,subsanada4,indicador5,cumple5,subsanada5,indicador6,cumple6,subsanada6,indicador7,cumple7,subsanada7,indicador8,cumple8,subsanada8,indicador9,cumple9,subsanada9,indicador10,cumple10,subsanada10,indicador11,cumple11,subsanada11,indicador12,cumple12,subsanada12"
 sql_mantenimientos = """ select 
-numero_orden,numero_bastidor,tipo_comercial,codigo_tipo_comercial,ldm,ldc,matricula,kilometraje,anio_modelo,matriculacion,asesor_servicio,fecha 
-from mantenimientos """
+numero_orden,numero_bastidor,tipo_comercial,codigo_tipo_comercial,ldm,ldc,matricula,kilometraje,anio_modelo,matriculacion,asesor_servicio,fecha,lugar,indicador1,cumple1,subsanada1,indicador2,cumple2,subsanada2,indicador3,cumple3,subsanada3,indicador4,cumple4,subsanada4,indicador5,cumple5,subsanada5,indicador6,cumple6,subsanada6,indicador7,cumple7,subsanada7,indicador8,cumple8,subsanada8,indicador9,cumple9,subsanada9,indicador10,cumple10,subsanada10,indicador11,cumple11,subsanada11,indicador12,cumple12,subsanada12 
+from mantenimientos 
+where fecha between '{}' and '{}' and numero_bastidor='{}'
+"""
+
 post_sql_mantenimientos = """
 INSERT INTO mantenimientos
 (

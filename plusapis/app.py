@@ -38,19 +38,29 @@ def json_serial(obj):
 def index():
     return render_template('index.html')
 
-@app.route('/getmantenimientos', methods=['GET'])
+@app.route('/getmantenimientos', methods=['POST'])
 def getmantenimientos():
+    datos = request.json
+    fechai = datetime.strptime(datos['fechai'].split('T')[0], '%Y-%m-%d')
+    fechai = str(fechai.day) + '-' + str(fechai.month) + '-' + str(fechai.year)
+    fechaf = datetime.strptime(datos['fechaf'].split('T')[0], '%Y-%m-%d')
+    fechaf = str(fechaf.day) + '-' + str(fechaf.month) + '-' + str(fechaf.year)
+    chasis = datos['chasis']
     conn = pyodbc.connect(connstring)
     cursor = conn.cursor()
     campos = sqls.campos_mantenimientos
     arrcampos = campos.split(',')
-    sql = sqls.sql_mantenimientos
+    sql = sqls.sql_mantenimientos.format(str(fechai),str(fechaf),chasis)
     cursor.execute(sql)
-    results = []
+    resp = { }
+    resultsrows = []
     for r in cursor:
         d = dict(zip(arrcampos, r))
-        results.append(d)
-    response = make_response(dumps(results, sort_keys=False, indent=2, default=json_serial))
+        d['fecha'] = str(d['fecha'])
+        resultsrows.append(d)
+    resp['datos'] = resultsrows
+    resp['columnas'] = arrcampos
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_serial))
     response.headers['content-type'] = 'application/json'
     return(response)
 
