@@ -1,0 +1,29 @@
+<div mat-dialog-content id='dialog-print'>
+    <mat-card>
+      <mat-card-title style="text-align: center; background-color: white">
+        <strong> {{parametros.chasis}} - OT - {{codmarca}} {{secuencia}}</strong>
+        <div style="float: right"><qrcode [qrdata]="parametros.chasis + '-OT-' + codmarca + secuencia" [size]="50" [level]="'M'"></qrcode></div>
+      </mat-card-title>
+      <br>
+      <mat-card-subtitle style="text-align:center">
+          <mat-divider></mat-divider>
+          <br>
+        Chasis: {{parametros.chasis}} -
+        Motor: {{parametros.motor}} -
+        Marca: {{parametros.marca}} -
+        Modelo: {{parametros.modelo}} -
+        Color: {{parametros.color}} -
+        Concesionario: {{parametros.concesionario}}
+      </mat-card-subtitle>
+      <mat-divider></mat-divider>
+      <mat-card-content *ngIf="vertabla">
+        <ng2-smart-table [settings]="settings" [source]="datos"></ng2-smart-table>
+      </mat-card-content>
+      <mat-card-footer style="text-align:center">
+      </mat-card-footer>
+    </mat-card>
+</div>
+<div style="float: right;">
+    <button mat-button (click)="cerrar()">Cancelar</button>
+    <button mat-button (click)="onPrint()">Imprimir</button>
+</div>

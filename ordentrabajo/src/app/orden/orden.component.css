@@ -1,0 +1,7 @@
+:host /deep/ ng2-smart-table tbody > tr > td{
+  text-align: center;
+  border: 1px solid #e9ebec;
+}
+
+
+
