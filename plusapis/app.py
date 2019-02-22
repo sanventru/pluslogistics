@@ -15,17 +15,24 @@ import pyodbc
 app = Flask(__name__)
 CORS(app)
 
+client = MongoClient('localhost', 27017)
+db = client['pluslogistics']
+coll_marcas = db.marcas
+coll_ottareas = db.ottareas
+coll_ot = db.ot
 
-# connstring = """Driver={SQL Server};
-#             Server=190.110.196.148;
-#             Database=generalm;
-#             UID=sa;
-#             PWD=13XBnone;"""
-connstring = """Driver={/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.2.so.0.1};
-            Server=190.110.196.148;
-            Database=generalm;
+
+connstring = """DRIVER={ODBC Driver 17 for SQL Server};
+            Server=siscal.pluslogistics.com.ec,3112;
+            Database=vwe;
             UID=sa;
-            PWD=13XBnone;"""
+            PWD=13xbnone;"""
+
+connstring_total = """DRIVER={ODBC Driver 17 for SQL Server};
+            Server=siscal.pluslogistics.com.ec,3112;
+            Database=pluslogistics;
+            UID=sa;
+            PWD=13xbnone;"""
 
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
@@ -38,29 +45,153 @@ def json_serial(obj):
 def index():
     return render_template('index.html')
 
-@app.route('/getmantenimientos', methods=['POST'])
-def getmantenimientos():
+
+@app.route('/put_ot', methods=['PUT'])
+def put_ot():
     datos = request.json
-    fechai = datetime.strptime(datos['fechai'].split('T')[0], '%Y-%m-%d')
-    fechai = str(fechai.day) + '-' + str(fechai.month) + '-' + str(fechai.year)
-    fechaf = datetime.strptime(datos['fechaf'].split('T')[0], '%Y-%m-%d')
-    fechaf = str(fechaf.day) + '-' + str(fechaf.month) + '-' + str(fechaf.year)
-    chasis = datos['chasis']
+    fechaactual = time.strftime("%d/%m/%Y %H:%M")
+    
+    for t in datos['tareas']:
+        del t['_id']
+
+
+    datosupdate = {}
+    datosupdate['tareas'] = datos['tareas']
+    datosupdate['fechacierre'] = fechaactual
+    datosupdate['estado'] = "cerrada"
+
+    coll_ot.update_one(
+        {'chasis': datos['chasis']},
+        {'$set': datosupdate }
+        )
+    resp = {}
+    resp['msg'] = 'ok'
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
+@app.route('/get_ottareas', methods=['GET'])
+def get_ottareas():
+    resp = coll_ottareas.find({})
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
+@app.route('/post_ot', methods=['POST'])
+def post_ot():
+    datos = request.json
+    datos['estado'] = 'abierta'
+    fechaactual = time.strftime("%d/%m/%Y %H:%M")
+    datos['fecha'] = fechaactual
+    coll_ot.insert_one(datos)
+    resp = {}
+    resp['msg'] = 'ok'
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
+@app.route('/get_ot/<estado>', methods=['GET'])
+def get_ot(estado):
+    resp = coll_ot.find({'estado': estado})
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
+
+@app.route('/getsecuencia/<marca>', methods=['GET'])
+def getsecuencia(marca):
+    resp = coll_marcas.find_one({'nombre':marca})
+    resp['secuencia'] = str(resp['secuencia']).zfill(3)
+    coll_marcas.update(
+        { 'nombre': marca },
+        { '$inc': { "secuencia": 1 } }
+    )
+    fechaactual = time.strftime("%d/%m/%Y")
+    resp['fecha'] = fechaactual
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
+
+
+@app.route('/getnovedades', methods=['GET'])
+def getnovedades():
+    conn = pyodbc.connect(connstring)
+    cursor = conn.cursor()
+    sql = sqls.sql_novedades
+    cursor.execute(sql)
+    results = []
+    campos = sqls.campos_novedades
+    arrcampos = campos.split(',')
+    for r in cursor:
+        d = dict(zip(arrcampos, r))
+        d['fecha'] = str(d['fecha'])
+        results.append(d)
+    columnas = []
+    for c in arrcampos:
+        d = {}
+        d[c] = {'title': c}
+        columnas.append(d)
+
+    resp = {}
+    resp['columnas'] = columnas
+    resp['datos'] = results
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_serial))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
+@app.route('/getnovedadeschasis/<chasis>', methods=['GET'])
+def getnovedadeschasis(chasis):
+    conn = pyodbc.connect(connstring)
+    cursor = conn.cursor()
+    sql = sqls.sql_novedades_chasis.format(chasis,chasis,chasis,chasis,chasis,chasis,chasis,chasis,chasis,chasis,chasis,chasis)
+    cursor.execute(sql)
+    results = []
+    campos = 'ubicacion,parte,observacion,zona,medida,novedades'
+    arrcampos = campos.split(',')
+    for r in cursor:
+        # d = dict(zip(arrcampos, r))
+        d = {}
+        d['ubicacion'] = r[0]
+        d['parte'] = r[1]
+        d['observacion'] = r[13]
+        d['zona'] = r[14]
+        d['medida'] = r[15]
+        danios = ''
+        for i in [2,3,4,5,6,7,8,9,10,11,12]:
+            if r[i]:
+                danios += r[i] + ','
+        d['novedades'] = danios[:-1]
+        results.append(d)
+    columnas = []
+    dcols = {}
+    for c in arrcampos:
+        dcols[c] = {'title': c}
+        columnas.append(dcols)
+
+    
+
+    resp = {}
+    resp['columnas'] = dcols
+    resp['datos'] = results
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_serial))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
+
+@app.route('/getmantenimientos', methods=['GET'])
+def getmantenimientos():
     conn = pyodbc.connect(connstring)
     cursor = conn.cursor()
     campos = sqls.campos_mantenimientos
     arrcampos = campos.split(',')
-    sql = sqls.sql_mantenimientos.format(str(fechai),str(fechaf),chasis)
+    sql = sqls.sql_mantenimientos
     cursor.execute(sql)
-    resp = { }
-    resultsrows = []
+    results = []
     for r in cursor:
         d = dict(zip(arrcampos, r))
-        d['fecha'] = str(d['fecha'])
-        resultsrows.append(d)
-    resp['datos'] = resultsrows
-    resp['columnas'] = arrcampos
-    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_serial))
+        results.append(d)
+    response = make_response(dumps(results, sort_keys=False, indent=2, default=json_serial))
     response.headers['content-type'] = 'application/json'
     return(response)
 

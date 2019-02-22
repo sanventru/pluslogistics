@@ -10,8 +10,16 @@ export class ApiService {
   private apiurl = 'http://localhost:5000/';
   constructor(private http: HttpClient) { }
 
+  get_ottareas(): Observable<any> {
+    return this.http.get(this.apiurl + 'get_ottareas');
+  }
+
   post_ot(datos): Observable<any> {
     return this.http.post(this.apiurl + 'post_ot', datos);
+  }
+
+  put_ot(datos): Observable<any> {
+    return this.http.put(this.apiurl + 'put_ot', datos);
   }
 
   getsecuencia(marca): Observable<any> {

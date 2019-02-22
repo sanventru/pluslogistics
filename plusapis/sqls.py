@@ -1,10 +1,64 @@
-campos_mantenimientos = "numero_orden,numero_bastidor,tipo_comercial,codigo_tipo_comercial,ldm,ldc,matricula,kilometraje,anio_modelo,matriculacion,asesor_servicio,fecha,lugar,indicador1,cumple1,subsanada1,indicador2,cumple2,subsanada2,indicador3,cumple3,subsanada3,indicador4,cumple4,subsanada4,indicador5,cumple5,subsanada5,indicador6,cumple6,subsanada6,indicador7,cumple7,subsanada7,indicador8,cumple8,subsanada8,indicador9,cumple9,subsanada9,indicador10,cumple10,subsanada10,indicador11,cumple11,subsanada11,indicador12,cumple12,subsanada12"
-sql_mantenimientos = """ select 
-numero_orden,numero_bastidor,tipo_comercial,codigo_tipo_comercial,ldm,ldc,matricula,kilometraje,anio_modelo,matriculacion,asesor_servicio,fecha,lugar,indicador1,cumple1,subsanada1,indicador2,cumple2,subsanada2,indicador3,cumple3,subsanada3,indicador4,cumple4,subsanada4,indicador5,cumple5,subsanada5,indicador6,cumple6,subsanada6,indicador7,cumple7,subsanada7,indicador8,cumple8,subsanada8,indicador9,cumple9,subsanada9,indicador10,cumple10,subsanada10,indicador11,cumple11,subsanada11,indicador12,cumple12,subsanada12 
-from mantenimientos 
-where fecha between '{}' and '{}' and numero_bastidor='{}'
+campos_novedades_chasis = 'ubicacion,parte,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,observacion,zona,medida'
+sql_novedades_chasis = """SELECT DISTINCT
+CASE WHEN I2_ZONA != '' OR
+I2_ZONA LIKE '%NINGUNA%' THEN I2_ZONA ELSE '' END AS Expr1, CASE WHEN I2_PARTE = '' OR
+I2_PARTE LIKE '%NINGUNA%' THEN '' ELSE I2_PARTE END AS Expr2, CASE WHEN I2_GOLPE = 'False' THEN '' ELSE 'GOLPE' END AS Expr3, CASE WHEN I2_CORTADO = 'False' THEN '' ELSE 'CORTADO' END AS Expr4,
+CASE WHEN I2_DESPRENDIDO = 'False' THEN '' ELSE 'DESPRENDIDO' END AS Expr5, CASE WHEN I2_DOBLADO = 'False' THEN '' ELSE 'DOBLADO' END AS Expr6,
+CASE WHEN I2_FISURADO = 'False' THEN '' ELSE 'FISURADO' END AS Expr7, CASE WHEN I2_DESCONCHE = 'False' THEN '' ELSE 'DESCONCHE' END AS Expr8,
+CASE WHEN I2_RAMEADO = 'False' THEN '' ELSE 'RAMEADO' END AS Expr9, CASE WHEN I2_RASPADO = 'False' THEN '' ELSE 'RASPADO' END AS Expr10,
+CASE WHEN I2_RAYAS = 'False' THEN '' ELSE 'RAYAS' END AS Expr11, CASE WHEN I2_ROTO = 'False' THEN '' ELSE 'ROTO' END AS Expr12, CASE WHEN I2_ONDULADO = 'False' THEN '' ELSE 'ONDULADO' END AS Expr13,
+I2_OBSERVACION, I2_ZONADANO, I2_MEDIDA
+FROM            TINSPECCION_EXTERNA AS I
+WHERE        (I2_CHASIS LIKE '{}') AND (I2_GOLPE = 'True') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_CORTADO = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_DESPRENDIDO = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_DOBLADO = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_FISURADO = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_DESCONCHE = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_RAMEADO = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_RASPADO = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_RAYAS = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_ROTO = 'True') OR
+(I2_CHASIS LIKE '{}') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL) AND (I2_ONDULADO = 'True')
+UNION
+SELECT DISTINCT
+CASE WHEN I2_ZONA != '' OR
+I2_ZONA LIKE '%NINGUNA%' THEN I2_ZONA ELSE '' END AS Expr1, CASE WHEN I2_PARTE = '' OR
+I2_PARTE LIKE '%NINGUNA%' THEN '' ELSE I2_PARTE END AS Expr2, CASE WHEN I2_GOLPE = 'False' THEN '' ELSE 'GOLPE' END AS Expr3, CASE WHEN I2_CORTADO = 'False' THEN '' ELSE 'CORTADO' END AS Expr4,
+CASE WHEN I2_DESPRENDIDO = 'False' THEN '' ELSE 'DESPRENDIDO' END AS Expr5, CASE WHEN I2_DOBLADO = 'False' THEN '' ELSE 'DOBLADO' END AS Expr6,
+CASE WHEN I2_FISURADO = 'False' THEN '' ELSE 'FISURADO' END AS Expr7, CASE WHEN I2_DESCONCHE = 'False' THEN '' ELSE 'DESCONCHE' END AS Expr8,
+CASE WHEN I2_RAMEADO = 'False' THEN '' ELSE 'RAMEADO' END AS Expr9, CASE WHEN I2_RASPADO = 'False' THEN '' ELSE 'RASPADO' END AS Expr10,
+CASE WHEN I2_RAYAS = 'False' THEN '' ELSE 'RAYAS' END AS Expr11, CASE WHEN I2_ROTO = 'False' THEN '' ELSE 'ROTO' END AS Expr12, CASE WHEN I2_ONDULADO = 'False' THEN '' ELSE 'ONDULADO' END AS Expr13,
+I2_OBSERVACION, I2_ZONADANO, I2_MEDIDA
+FROM            TINSPECCION_EXTERNA AS I
+WHERE        (I2_CHASIS LIKE '{}') AND (I2_OBSERVACION <> '') AND (I2_REPARADO = 'False') AND (I2_RESPONSABLE IS NOT NULL)
 """
 
+
+
+
+campos_novedades = "chasis,marca,motor,modelo,color,concesionario,fecha"
+sql_novedades = """SELECT DISTINCT
+TINSPECCION_EXTERNA.I2_CHASIS AS CHASIS, TMODELO.MO_MARCA, TVEHICULO.VE_MOTOR, TVEHICULO.VE_MODELO AS MODELO, TVEHICULO.VE_COLOR AS COLOR, TFACTURACION.FA_CLIENTE AS CONCESIONARIO,
+TFACTURACION.FA_FECHA AS [FECHA DE FACTURACION]
+FROM            TINSPECCION_EXTERNA INNER JOIN
+TVEHICULO ON TVEHICULO.VE_CHASIS = TINSPECCION_EXTERNA.I2_CHASIS LEFT OUTER JOIN
+TFACTURACION ON TFACTURACION.FA_CHASIS = TINSPECCION_EXTERNA.I2_CHASIS INNER JOIN
+TMODELO on TMODELO.MO_CODIGO = TVEHICULO.MO_SECUENCIAL
+WHERE        (TINSPECCION_EXTERNA.I2_CHASIS IN
+(SELECT        I1_CHASIS
+FROM            TIN_INTERNA AS I1
+WHERE        (I1_FECHA IN
+(SELECT        MAX(I1_FECHA) AS Expr1
+FROM            TIN_INTERNA
+WHERE        (I1_CHASIS = I1.I1_CHASIS))) AND (I1_LOCALIDAD = 'INGRESO PATIO QUITO'))) AND (TINSPECCION_EXTERNA.I2_LOCALIDAD = 'INGRESO PATIO QUITO') AND
+(TINSPECCION_EXTERNA.I2_ZONA <> 'NINGUNA') AND (TINSPECCION_EXTERNA.I2_REPARADO = 0) AND (TINSPECCION_EXTERNA.I2_USUARIO <> 'ADMINISTRADOR')
+"""
+
+campos_mantenimientos = "numero_orden,numero_bastidor,tipo_comercial,codigo_tipo_comercial,ldm,ldc,matricula,kilometraje,anio_modelo,matriculacion,asesor_servicio,fecha"
+sql_mantenimientos = """ select 
+numero_orden,numero_bastidor,tipo_comercial,codigo_tipo_comercial,ldm,ldc,matricula,kilometraje,anio_modelo,matriculacion,asesor_servicio,fecha 
+from mantenimientos """
 post_sql_mantenimientos = """
 INSERT INTO mantenimientos
 (
@@ -98,7 +152,7 @@ FROM          TIN_INTERNA AS I
 WHERE      (I1_FECHA =
 (SELECT     TOP (1) MIN(I1_FECHA) AS Expr1
 FROM          TIN_INTERNA AS I1
-WHERE      (I1_CHASIS = I.I1_CHASIS) AND (I1_LOCALIDAD = 'INGRESO PATIO GM OBB CALACALI'))) AND (I1_FECHA BETWEEN '{}' AND
+WHERE      (I1_CHASIS = I.I1_CHASIS) AND (I1_LOCALIDAD = 'INGRESO PATIO QUITO'))) AND (I1_FECHA BETWEEN '{}' AND
 '{}') AND 
 ((SELECT     TOP (1) I1_LOCALIDAD
 FROM         TIN_INTERNA AS TIN_INTERNA_2
@@ -109,7 +163,7 @@ FROM          TIN_INTERNA AS I3
 WHERE      (I1_FECHA =
 (SELECT     TOP (1) MIN(I1_FECHA) AS Expr1
 FROM          TIN_INTERNA AS I1
-WHERE      (I1_CHASIS = TINSPECCION_EXTERNA.I2_CHASIS) AND (I1_LOCALIDAD = 'INGRESO PATIO GM OBB CALACALI'))) AND (I1_FECHA BETWEEN
+WHERE      (I1_CHASIS = TINSPECCION_EXTERNA.I2_CHASIS) AND (I1_LOCALIDAD = 'INGRESO PATIO QUITO'))) AND (I1_FECHA BETWEEN
 '{}' AND '{}') AND
 ((SELECT     TOP (1) I1_LOCALIDAD
 FROM         TIN_INTERNA AS TIN_INTERNA_2
@@ -119,5 +173,4 @@ ORDER BY CHASIS, [FECHA INSPECCION]"""
 
 campos2 = "LO_SECUENCIAL,LO_DESCRIPCION"
 sql2= """ select LO_SECUENCIAL, LO_DESCRIPCION from TLOCALIDAD where LO_DESCRIPCION like 'SALIDA %'"""
-
 

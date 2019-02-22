@@ -85,7 +85,10 @@ export class OrdenComponent implements OnInit {
     virtualWindow.document.close();
     virtualWindow.focus();
     setTimeout(t => { virtualWindow.print(); virtualWindow.close(); }, 1000);
-    this.dialogRef.close(this.datos);
+    const resp = {};
+    resp['novedades'] = this.datos;
+    resp['codot'] = this.parametros.chasis + '-OT-' + this.codmarca + this.secuencia;
+    this.dialogRef.close(resp);
 }
 
 cerrar() {

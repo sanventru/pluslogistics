@@ -1,0 +1,48 @@
+<div mat-dialog-content>
+  <mat-card>
+    <mat-card-title style="text-align: center; background-color: white">
+      <strong> {{parametros.cod}}</strong>
+      <div style="float: right">
+        <qrcode [qrdata]="parametros.chasis + '-OT-' + codmarca + secuencia" [size]="50" [level]="'M'"></qrcode>
+      </div>
+    </mat-card-title>
+    <br>
+    <mat-card-subtitle style="text-align:center">
+      <mat-divider></mat-divider>
+      <br>
+      Chasis: {{parametros.chasis}} -
+      Motor: {{parametros.motor}} -
+      Marca: {{parametros.marca}} -
+      Modelo: {{parametros.modelo}} -
+      Color: {{parametros.color}} -
+      Concesionario: {{parametros.concesionario}}
+    </mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <ng2-smart-table [settings]="settings" [source]="datos"></ng2-smart-table>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-form-field style="width:400px" class="example-full-width">
+        <input type="text" placeholder="Tarea" matInput (keyup)="filtrar($event)" [(ngModel)]="vtarea"
+          [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of ftareas" [value]="option.tarea">
+            {{option.tarea}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button mat-raised-button (click)="add()">Añadir</button>
+    </mat-card-content>
+    <mat-card-content>
+      <ng2-smart-table [settings]="settingstareas" [source]="tareasseleccionadas"></ng2-smart-table>
+    </mat-card-content>
+    <mat-card-content>
+      Añadir fotos
+    </mat-card-content>
+    <mat-card-footer style="text-align:center">
+      <button mat-stroked-button color="warn" (click)="cerrar()">Cancelar</button>
+      <button mat-stroked-button color="secondary" (click)="guardar()">Guardar</button>
+    </mat-card-footer>
+  </mat-card>
+</div>

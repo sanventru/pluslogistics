@@ -2,10 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NovedadesComponent } from './novedades/novedades.component';
 import { OrdenComponent } from './orden/orden.component';
+import { OtabiertasComponent } from './otabiertas/otabiertas.component';
+import { CerrarotComponent } from './cerrarot/cerrarot.component';
 
 const routes: Routes = [
   { path: 'novedades', component: NovedadesComponent },
   { path: 'orden', component: OrdenComponent },
+  { path: 'otabierta', component: OtabiertasComponent },
+  { path: 'cerrarot', component: CerrarotComponent },
   { path: '**', component: NovedadesComponent }
 ];
 

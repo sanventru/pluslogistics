@@ -35,6 +35,9 @@ export class NovedadesComponent implements OnInit {
       },
       concesionario: {
         title: 'concesionario'
+      },
+      num_novedades: {
+        title: '# Daños'
       }
     },
     actions: {
@@ -65,12 +68,12 @@ export class NovedadesComponent implements OnInit {
       width: '900px',
       data: datos
     });
-
     dialogRef.afterClosed().subscribe(result => {
       this.resp = result;
       if (result) {
         this.source.remove(datos);
-        datos['novedades'] = this.resp;
+        datos['cod'] = this.resp['codot'];
+        datos['novedades'] = this.resp['novedades'];
         this.srv.post_ot(datos).subscribe((data) => {
           console.log(data);
         });
