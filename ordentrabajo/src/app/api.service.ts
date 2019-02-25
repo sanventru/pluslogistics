@@ -10,6 +10,14 @@ export class ApiService {
   private apiurl = 'http://localhost:5000/';
   constructor(private http: HttpClient) { }
 
+  subirImagen(datos: any): Observable<any> {
+    return this.http.post(this.apiurl + 'fileupload', datos);
+  }
+
+  login(datos: any): Observable<any> {
+    return this.http.post(this.apiurl + 'login', datos);
+}
+
   get_ottareas(): Observable<any> {
     return this.http.get(this.apiurl + 'get_ottareas');
   }
@@ -26,8 +34,8 @@ export class ApiService {
     return this.http.get(this.apiurl + 'getsecuencia/' + marca);
   }
 
-  getnovedades(): Observable<any> {
-    return this.http.get(this.apiurl + 'getnovedades');
+  getnovedades(usuario): Observable<any> {
+    return this.http.post(this.apiurl + 'getnovedades', usuario);
   }
 
   getnovedadeschasis(chasis): Observable<any> {
@@ -39,7 +47,7 @@ export class ApiService {
   }
 
   getdatachasis(chasis): Observable<any> {
-    return this.http.get(this.apiurl + 'getdatachasis/' + chasis );
+    return this.http.get(this.apiurl + 'getdatachasis/' + chasis);
   }
 
   getmantenimientos(datos): Observable<any> {

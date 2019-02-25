@@ -6,16 +6,13 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { UUID } from 'angular2-uuid';
-
-
 
 @Component({
-  selector: 'app-cerrarot',
-  templateUrl: './cerrarot.component.html',
-  styleUrls: ['./cerrarot.component.css']
+  selector: 'app-proforma',
+  templateUrl: './proforma.component.html',
+  styleUrls: ['./proforma.component.css']
 })
-export class CerrarotComponent implements OnInit {
+export class ProformaComponent implements OnInit {
   datos: LocalDataSource;
   parametros;
   tareasseleccionadas: LocalDataSource;
@@ -76,6 +73,7 @@ export class CerrarotComponent implements OnInit {
       // custom: [{ name: 'detalle', title: 'Orden Trabajo' }]
     },
   };
+  arrfotos = [];
   vtarea;
   secuencia;
   codmarca;
@@ -85,24 +83,12 @@ export class CerrarotComponent implements OnInit {
   ftareas;
   myControl = new FormControl();
   filteredOptions;
-
-  trueimg: Boolean = false;
-  loader: Boolean = false;
-  myimg: string;
-  final: Boolean = true;
-  msn: string;
-  img;
-  codemp;
-  numfac;
-  imagenpedido;
-  files = [];
   usuario;
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private srv: ApiService,
-    public dialogRef: MatDialogRef<CerrarotComponent>,
+    public dialogRef: MatDialogRef<ProformaComponent>,
     @Inject(MAT_DIALOG_DATA) public params: any
   ) {
     this.usuario = JSON.parse(window.localStorage.getItem('usuario')).usuario;
@@ -110,14 +96,16 @@ export class CerrarotComponent implements OnInit {
     this.datos = new LocalDataSource;
     this.parametros = this.params;
     this.datos.load(this.params.novedades);
+    this.tareasseleccionadas.load(this.params.tareas);
+    this.params.imagenes.forEach(element => {
+      const dfoto = {};
+      dfoto['name'] = element;
+      dfoto['path'] = 'http://localhost:5000/images/' + element;
+      this.arrfotos.push(dfoto);
+    });
   }
 
   ngOnInit() {
-    // this.filteredOptions = this.myControl.valueChanges
-    // .pipe(
-    //   startWith(''),
-    //   map(value => this._filter(value))
-    // );
     this.srv.get_ottareas().subscribe((data) => {
       this.tareas = data;
       this.ftareas = data;
@@ -126,26 +114,7 @@ export class CerrarotComponent implements OnInit {
 
   eliminaimagen(item) {
     console.log(item);
-    this.files.splice(item, 1);
-  }
-
-  subirfile(ev) {
-    const img: any = ev.target;
-    this.img = img;
-    const uuidValue = UUID.UUID();
-    if (img.files.length > 0) {
-      this.loader = true;
-      const dictimagen = img.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(img.files[0]);
-      reader.onload = (_event) => {
-        dictimagen['path'] = reader.result;
-      };
-      // console.log(dictimagen['name']);
-      // const ext = dictimagen['name'].split('.')[-1];
-      // dictimagen['name'] = uuidValue.toString() + ext;
-      this.files.push(dictimagen);
-    }
+    this.arrfotos.splice(item, 1);
   }
 
   filtrar(e) {
@@ -177,36 +146,17 @@ export class CerrarotComponent implements OnInit {
   }
 
   guardar() {
-    if (this.tareasseleccionadas['data'].length === 0) {
-      alert('Debe ingresar al menos una tarea');
-      return;
-    }
-
-    if (this.files.length === 0) {
-      alert('Debe ingresar al menos una imagen');
-      return;
-    }
-    // subir las imagenes
-    let imagenes = [];
-    const form = new FormData();
-    this.files.forEach(element => {
-      form.append(element.name, element);
-    });
-    this.srv.subirImagen(form).subscribe((data) => {
+    // if ( this.tareasseleccionadas['data'].length === 0 ) {
+    //   alert('Debe ingresar al menos una tarea');
+    //   return;
+    // }
+    const datosg = this.parametros;
+    // datosg['tareas'] = this.tareasseleccionadas['data'];
+    datosg['estado'] = 'proformada';
+    datosg['usuarioproforma'] = this.usuario;
+    this.srv.put_ot(datosg).subscribe((data) => {
       console.log(data);
-      imagenes = data;
-      // guardar datos
-      const datosg = this.parametros;
-      datosg['tareas'] = this.tareasseleccionadas['data'];
-      datosg['estado'] = 'cerrada';
-      datosg['imagenes'] = imagenes;
-      datosg['usuariocierraot'] = this.usuario;
-      this.srv.put_ot(datosg).subscribe((data1) => {
-        console.log(data1);
-      });
-
-    }
-    );
+    });
     this.dialogRef.close(true);
   }
 }

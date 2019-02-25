@@ -46,16 +46,20 @@ export class NovedadesComponent implements OnInit {
     },
   };
   resp;
+usuario;
+spinner = true;
 
   constructor(
     private srv: ApiService,
     private router: Router,
     public dialog: MatDialog
   ) {
+    this.usuario = JSON.parse(window.localStorage.getItem('usuario'));
     this.source = new LocalDataSource();
-    this.srv.getnovedades().subscribe((data) => {
+    this.srv.getnovedades(this.usuario).subscribe((data) => {
       this.columnas = data.columnas;
       this.source.load(data.datos);
+      this.spinner = false;
     });
   }
 
@@ -74,6 +78,7 @@ export class NovedadesComponent implements OnInit {
         this.source.remove(datos);
         datos['cod'] = this.resp['codot'];
         datos['novedades'] = this.resp['novedades'];
+        datos['usuario'] = this.usuario.usuario;
         this.srv.post_ot(datos).subscribe((data) => {
           console.log(data);
         });

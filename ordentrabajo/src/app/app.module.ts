@@ -10,7 +10,7 @@ import {
   MatButtonModule, MatCheckboxModule, MatToolbarModule, MatIconModule, MatFormFieldModule,
   MatSelectModule, MatOptionModule, MatInputModule, MatGridListModule, MatCardModule, MatDividerModule,
   MatRadioModule, MatDatepickerModule, MatNativeDateModule, MatTableModule, MatDialogModule,
-  MatAutocompleteModule
+  MatAutocompleteModule, MatProgressSpinnerModule
 } from '@angular/material';
 // import { Ng2CompleterModule } from "ng2-completer";
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -19,6 +19,8 @@ import { OrdenComponent } from './orden/orden.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { OtabiertasComponent } from './otabiertas/otabiertas.component';
 import { CerrarotComponent } from './cerrarot/cerrarot.component';
+import { OtcerradasComponent } from './otcerradas/otcerradas.component';
+import { ProformaComponent } from './proforma/proforma.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { CerrarotComponent } from './cerrarot/cerrarot.component';
     NovedadesComponent,
     OrdenComponent,
     OtabiertasComponent,
-    CerrarotComponent
+    CerrarotComponent,
+    OtcerradasComponent,
+    ProformaComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,8 @@ import { CerrarotComponent } from './cerrarot/cerrarot.component';
     MatNativeDateModule,
     MatTableModule,
     MatDialogModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

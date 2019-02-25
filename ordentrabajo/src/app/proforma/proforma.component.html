@@ -1,4 +1,5 @@
 <div mat-dialog-content>
+<h1>Proforma</h1>
   <mat-card>
     <mat-card-title style="text-align: center; background-color: white">
       <strong> {{parametros.cod}}</strong>
@@ -22,7 +23,7 @@
       <ng2-smart-table [settings]="settings" [source]="datos"></ng2-smart-table>
     </mat-card-content>
     <mat-divider></mat-divider>
-    <mat-card-content>
+    <!-- <mat-card-content>
       <mat-form-field style="width:400px" class="example-full-width">
         <input type="text" placeholder="Tarea" matInput (keyup)="filtrar($event)" [(ngModel)]="vtarea"
           [matAutocomplete]="auto">
@@ -33,36 +34,22 @@
         </mat-autocomplete>
       </mat-form-field>
       <button mat-raised-button (click)="add()">Añadir</button>
-    </mat-card-content>
+    </mat-card-content> -->
     <mat-card-content>
       <ng2-smart-table [settings]="settingstareas" [source]="tareasseleccionadas"></ng2-smart-table>
     </mat-card-content>
     <mat-card-content>
-        <mat-divider></mat-divider>
-      Añadir fotos
-      <div class="custom-file">
-        <!-- <input type="file" accept="image/*,.pdf" class="custom-file-input" name="file" (change)="subirfile($event)"> -->
-        <input style="display: none" type="file" accept="image/*,.pdf" name="file" (change)="subirfile($event)"
-          #fileInput>
-        <button (click)="fileInput.click()" mat-raised-button>Seleccionar Imágen</button>
-        <div *ngIf="loader">
-          <div >
-            <table>
-              <tr *ngFor="let item of files; index as i">
-                <td>
-                  <label class="custom-file-label"><br>{{ item.name }}</label>
-                </td>
+      <mat-divider></mat-divider>
+        <table>
+            <tr *ngFor="let item of arrfotos; index as i">
+            <td>
+              <img src="{{ item.path }}" height="50" alt="" srcset="">
+            </td>
               <td>
-                <img src="{{ item.path }}" height="50" alt="" srcset="">
+                <button mat-flat-button color="accent" (click)="eliminaimagen(i)">Eliminar</button>
               </td>
-                <td>
-                  <button mat-flat-button color="accent" (click)="eliminaimagen(i)">Eliminar</button>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
+            </tr>
+          </table>
     </mat-card-content>
     <mat-card-footer style="text-align:center">
       <button mat-stroked-button color="warn" (click)="cerrar()">Cancelar</button>

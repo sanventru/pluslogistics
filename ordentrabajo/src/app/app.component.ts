@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from './api.service';
 
 @Component({
   selector: 'app-root',
@@ -8,18 +9,50 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'ot';
+  usuario;
+  password;
+  logeado = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private srv: ApiService
   ) {
+    const l = window.localStorage.getItem('usuario');
+    if (l) {
+      this.logeado = true;
+    } else {
+      this.logeado = false;
+    }
+  }
+
+  salir() {
+    window.localStorage.removeItem('usuario');
+    this.logeado = false;
+  }
+
+  ingresar() {
+    const datos = {};
+    datos['usuario'] =  this.usuario;
+    datos['clave'] = this.password;
+    this.srv.login(datos).subscribe((data) => {
+      if (data.empresa) {
+        window.localStorage.setItem('usuario', JSON.stringify(data));
+        this.logeado = true;
+      }
+    });
+
   }
 
   irOtAbiertas() {
-  this.router.navigate(['otabierta']);
+    this.router.navigate(['otabierta']);
+  }
+
+  irOtCerradas() {
+    this.router.navigate(['otcerrada']);
   }
 
   irNovedades() {
-  this.router.navigate(['novedades']);
+    this.router.navigate(['novedades']);
   }
 
 }

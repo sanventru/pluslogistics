@@ -11,6 +11,9 @@ from bson.objectid import ObjectId
 import coneccion
 import sqls
 import pyodbc 
+import uuid
+
+
 
 app = Flask(__name__)
 CORS(app)
@@ -20,6 +23,7 @@ db = client['pluslogistics']
 coll_marcas = db.marcas
 coll_ottareas = db.ottareas
 coll_ot = db.ot
+coll_usuarios = db.usuarios
 
 
 connstring = """DRIVER={ODBC Driver 17 for SQL Server};
@@ -46,19 +50,68 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/login', methods = ['POST'])
+def login():
+    datos = request.json
+    resp = coll_usuarios.find_one({'usuario':datos['usuario'], 'clave':datos['clave']})
+    if resp == None:
+        resp = {}
+        resp['empresa'] = False
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
+@app.route('/fileupload', methods=['POST'])
+def fileupload():
+        try:
+            print("entro en post")
+            print(request.files)
+            resp = []
+            for f in request.files:
+                file = request.files[f]
+                unique_filename = str(uuid.uuid4()) + '.' + file.filename.split('.')[-1] 
+                resp.append(unique_filename)
+                # file.save(os.path.join('imagenes', file.filename))
+                file.save(os.path.join('imagenes', unique_filename))
+            # resp['msg'] = 'ok'
+            response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
+            response.headers['content-type'] = 'application/json'
+            return(response)
+        except Exception as e:
+            print(str(e))
+            return {'status': 'ERROR', 'msg': 'no'}, 400
+
+@app.route('/images/<imagename>')
+def images(imagename):
+    try:
+        w = int(request.args['w'])
+        h = int(request.args['h'])
+    except (KeyError, ValueError):
+        return send_from_directory('imagenes', imagename)
+    return send_from_directory('imagenes', imagename)
+
+
+
 @app.route('/put_ot', methods=['PUT'])
 def put_ot():
     datos = request.json
     fechaactual = time.strftime("%d/%m/%Y %H:%M")
     
-    for t in datos['tareas']:
-        del t['_id']
+    if datos['estado'] != 'proformada':
+        for t in datos['tareas']:
+            del t['_id']
 
 
     datosupdate = {}
     datosupdate['tareas'] = datos['tareas']
-    datosupdate['fechacierre'] = fechaactual
-    datosupdate['estado'] = "cerrada"
+    datosupdate['imagenes'] = datos['imagenes']
+    datosupdate['estado'] = datos['estado']
+    if datos['estado'] == 'proformada':
+        datosupdate['fechaproforma'] = fechaactual
+        datosupdate['usuarioproforma'] = datos['usuarioproforma']
+    elif datos['estado'] == 'cerrada':
+        datosupdate['fechacierre'] = fechaactual
+        datosupdate['usuariocierraot'] = datos['usuariocierraot']
 
     coll_ot.update_one(
         {'chasis': datos['chasis']},
@@ -114,11 +167,13 @@ def getsecuencia(marca):
 
 
 
-@app.route('/getnovedades', methods=['GET'])
+@app.route('/getnovedades', methods=['POST'])
 def getnovedades():
+    usuario = request.json
+    patio = usuario['patio']
     conn = pyodbc.connect(connstring)
     cursor = conn.cursor()
-    sql = sqls.sql_novedades
+    sql = sqls.sql_novedades.format(patio, patio)
     cursor.execute(sql)
     results = []
     campos = sqls.campos_novedades
