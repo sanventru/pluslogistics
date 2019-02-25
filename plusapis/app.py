@@ -145,7 +145,25 @@ def post_ot():
 
 @app.route('/get_ot/<estado>', methods=['GET'])
 def get_ot(estado):
+    
     resp = coll_ot.find({'estado': estado})
+    if estado == 'cerrada':
+        resp1 = []
+        for r in resp:
+            total = 0
+            numtareas = 0
+            for t in r['tareas']:
+                total += t['tarifa']
+                numtareas += 1
+            r['total'] = round(total,2)
+            r['numtareas'] = numtareas
+            numnovedades = 0
+            for t in r['novedades']:
+                numnovedades += 1
+            r['numnovedades'] = numnovedades
+            resp1.append(r)
+        resp = resp1
+
     response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
     response.headers['content-type'] = 'application/json'
     return(response)

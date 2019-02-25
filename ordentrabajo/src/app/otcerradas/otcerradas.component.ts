@@ -38,12 +38,18 @@ export class OtcerradasComponent implements OnInit {
       concesionario: {
         title: 'concesionario'
       },
-      estado: {
-        title: 'estado'
+      // estado: {
+      //   title: 'estado'
+      // },
+      numnovedades: {
+        title: '#novedades'
       },
-      // novedades: {
-      //   title: 'novedades'
-      // }
+      numtareas: {
+        title: '#tareas'
+      },
+      total: {
+        title: 'total'
+      }
     },
     actions: {
       edit: false, delete: false, add: false,
