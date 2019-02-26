@@ -1,11 +1,19 @@
-<div mat-dialog-content>
-<h1>Proforma</h1>
+<div mat-dialog-content id='dialog-print' class=container4>
   <mat-card>
-    <mat-card-title style="text-align: center; background-color: white">
-      <strong> {{parametros.cod}}</strong>
-      <div style="float: right">
-        <qrcode [qrdata]="parametros.chasis + '-OT-' + codmarca + secuencia" [size]="50" [level]="'M'"></qrcode>
-      </div>
+    <mat-card-title >
+      <table>
+        <tr>
+          <td >
+            PROF. <strong> {{parametros.cod}} </strong>
+          </td>
+          <td >
+            <qrcode [qrdata]="parametros.cod" [size]="50" [level]="'M'"></qrcode>
+          </td>
+          <td style="text-align: right">
+              Fecha:{{ fecha }}
+          </td>
+        </tr>
+      </table>
     </mat-card-title>
     <br>
     <mat-card-subtitle style="text-align:center">
@@ -21,6 +29,7 @@
     <mat-divider></mat-divider>
     <mat-card-content>
       <ng2-smart-table [settings]="settings" [source]="datos"></ng2-smart-table>
+ 
     </mat-card-content>
     <mat-divider></mat-divider>
     <!-- <mat-card-content>
@@ -35,25 +44,31 @@
       </mat-form-field>
       <button mat-raised-button (click)="add()">Añadir</button>
     </mat-card-content> -->
-    <mat-card-content>
-      <ng2-smart-table [settings]="settingstareas" [source]="tareasseleccionadas"></ng2-smart-table>
+    <mat-card-content style="text-align:center">
+      <ng2-smart-table style="text-align:center"  [settings]="settingstareas" [source]="tareasseleccionadas"></ng2-smart-table>
+      <mat-divider></mat-divider>
+      <div style="text-align: center">
+          Subtotal : {{ parametros.total }} 
+      </div>
+      <mat-divider></mat-divider>
     </mat-card-content>
     <mat-card-content>
       <mat-divider></mat-divider>
-        <table>
-            <tr *ngFor="let item of arrfotos; index as i">
-            <td>
-              <img src="{{ item.path }}" height="50" alt="" srcset="">
-            </td>
-              <td>
-                <button mat-flat-button color="accent" (click)="eliminaimagen(i)">Eliminar</button>
-              </td>
-            </tr>
-          </table>
+      <table>
+        <tr *ngFor="let item of arrfotos; index as i">
+          <td>
+            <img src="{{ item.path }}" height="50" alt="" srcset="">
+          </td>
+          <td>
+            <!-- <button mat-flat-button color="accent" (click)="eliminaimagen(i)">Eliminar</button> -->
+          </td>
+        </tr>
+      </table>
     </mat-card-content>
     <mat-card-footer style="text-align:center">
-      <button mat-stroked-button color="warn" (click)="cerrar()">Cancelar</button>
-      <button mat-stroked-button color="secondary" (click)="guardar()">Guardar</button>
+
     </mat-card-footer>
   </mat-card>
 </div>
+<button mat-stroked-button color="warn" (click)="cerrar()">Cancelar</button>
+<button mat-stroked-button color="secondary" (click)="guardar()">Guarda/Imprimir</button>

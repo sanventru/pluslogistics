@@ -30,6 +30,10 @@ export class ApiService {
     return this.http.put(this.apiurl + 'put_ot', datos);
   }
 
+  updatesql_novedades(datos): Observable<any> {
+    return this.http.put(this.apiurl + 'updatesql_novedades', datos);
+  }
+
   getsecuencia(marca): Observable<any> {
     return this.http.get(this.apiurl + 'getsecuencia/' + marca);
   }

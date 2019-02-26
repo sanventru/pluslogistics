@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject} from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ApiService } from '../api.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { LocalDataSource } from 'ng2-smart-table';
 
 
@@ -24,19 +24,19 @@ export class OrdenComponent implements OnInit {
       },
       ubicacion: {
         title: 'ubicacion',
-      filter: false
+        filter: false
       },
       medida: {
         title: 'medida',
-      filter: false
+        filter: false
       },
       observacion: {
         title: 'observacion',
-      filter: false
+        filter: false
       },
       zona: {
         title: 'zona',
-      filter: false
+        filter: false
       },
       novedades: {
         title: 'novedades',
@@ -65,16 +65,23 @@ export class OrdenComponent implements OnInit {
     //   this.parametros = params;
     // });
     this.parametros = this.params;
-    this.srv.getnovedadeschasis(this.parametros.chasis).subscribe((data) => {
-      this.datos = data.datos;
-      this.columnas = data.columnas;
+    if (this.parametros.estado) {
+      this.datos = this.parametros.novedades;
       this.vertabla = true;
-    });
-    this.srv.getsecuencia(this.parametros.marca).subscribe((data) => {
-      this.secuencia = data.secuencia;
-      this.codmarca = data.cod;
-      this.fecha = data.fecha;
-    });
+      this.secuencia = this.parametros.cod.substring(this.parametros.cod.length - 3);
+      this.codmarca = this.parametros.cod.substr(-5, 2);
+    } else {
+      this.srv.getnovedadeschasis(this.parametros.chasis).subscribe((data) => {
+        this.datos = data.datos;
+        this.columnas = data.columnas;
+        this.vertabla = true;
+        this.srv.getsecuencia(this.parametros.marca).subscribe((data1) => {
+          this.secuencia = data1.secuencia;
+          this.codmarca = data1.cod;
+          this.fecha = data1.fecha;
+        });
+      });
+    }
   }
 
   onPrint() {
@@ -89,10 +96,10 @@ export class OrdenComponent implements OnInit {
     resp['novedades'] = this.datos;
     resp['codot'] = this.parametros.chasis + '-OT-' + this.codmarca + this.secuencia;
     this.dialogRef.close(resp);
-}
+  }
 
-cerrar() {
-  this.dialogRef.close(false);
-}
+  cerrar() {
+    this.dialogRef.close(false);
+  }
 
 }

@@ -1,7 +1,18 @@
 <mat-card>
   <mat-card-header>
+      <mat-toolbar color="info">
+          <mat-toolbar-row>
+              <div *ngIf="totalRows" style="text-align: right;">
+                  <label>Número de registros: {{totalRows}}</label>
+                </div>
+            <span class="custom-spacer"></span>
+            <button mat-raised-button (click)="estado('cerrada')">Sin Proforma<mat-icon class="custom-icon" >description</mat-icon></button>
+            <button mat-raised-button (click)="estado('proformada')" >Proformadas<mat-icon class="custom-icon" >payment</mat-icon></button>
+          </mat-toolbar-row>
+        </mat-toolbar>
   </mat-card-header>
   <mat-card-content>
+      
     <ng2-smart-table [settings]="settings" [source]="source" (custom)="onCustom($event)"></ng2-smart-table>
   </mat-card-content>
 </mat-card>

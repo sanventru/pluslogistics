@@ -12,6 +12,7 @@ export class AppComponent {
   usuario;
   password;
   logeado = false;
+  isActive = true;
 
   constructor(
     private router: Router,

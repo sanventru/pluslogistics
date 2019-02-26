@@ -13,6 +13,7 @@ import {
   MatAutocompleteModule, MatProgressSpinnerModule
 } from '@angular/material';
 // import { Ng2CompleterModule } from "ng2-completer";
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { of as observableOf, Observable } from 'rxjs';
 import { OrdenComponent } from './orden/orden.component';
@@ -43,6 +44,7 @@ import { ProformaComponent } from './proforma/proforma.component';
     // Ng2CompleterModule,
     Ng2SmartTableModule,
     QRCodeModule,
+    AngularFontAwesomeModule,
     MatButtonModule,
     MatCheckboxModule,
     MatToolbarModule,

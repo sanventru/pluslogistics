@@ -69,7 +69,7 @@ export class ProformaComponent implements OnInit {
       },
     },
     actions: {
-      edit: true, delete: true, add: false,
+      edit: false, delete: false, add: false,
       // custom: [{ name: 'detalle', title: 'Orden Trabajo' }]
     },
   };
@@ -84,6 +84,7 @@ export class ProformaComponent implements OnInit {
   myControl = new FormControl();
   filteredOptions;
   usuario;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -106,6 +107,19 @@ export class ProformaComponent implements OnInit {
   }
 
   ngOnInit() {
+    const fecha = new Date();
+    let mes = (fecha.getMonth() + 1).toString();
+    let dia = fecha.getDate().toString();
+    const ano = fecha.getFullYear();
+    if ( parseInt(dia, 10) < 10 ) {
+      dia = '0' + dia.toString();
+    }
+    if ( parseInt(mes, 10) < 10 ) {
+      mes = '0' + mes.toString();
+    }
+    this.fecha = ano + '-' + mes + '-' + dia;
+
+
     this.srv.get_ottareas().subscribe((data) => {
       this.tareas = data;
       this.ftareas = data;
@@ -146,17 +160,20 @@ export class ProformaComponent implements OnInit {
   }
 
   guardar() {
-    // if ( this.tareasseleccionadas['data'].length === 0 ) {
-    //   alert('Debe ingresar al menos una tarea');
-    //   return;
-    // }
+
     const datosg = this.parametros;
-    // datosg['tareas'] = this.tareasseleccionadas['data'];
     datosg['estado'] = 'proformada';
     datosg['usuarioproforma'] = this.usuario;
     this.srv.put_ot(datosg).subscribe((data) => {
       console.log(data);
     });
+
+    const virtualWindow: any = window.open('', 'PRINT', 'height=400,width=800');
+    virtualWindow.document.write('<html><head><title>Print</title>');
+    virtualWindow.document.write('</head><body>' + document.getElementById('dialog-print').innerHTML + '</body></html>');
+    virtualWindow.document.close();
+    virtualWindow.focus();
+    setTimeout(t => { virtualWindow.print(); virtualWindow.close(); }, 1000);
     this.dialogRef.close(true);
   }
 }

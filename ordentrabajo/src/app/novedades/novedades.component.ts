@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -10,7 +10,7 @@ import { LocalDataSource } from 'ng2-smart-table';
   templateUrl: './novedades.component.html',
   styleUrls: ['./novedades.component.css']
 })
-export class NovedadesComponent implements OnInit {
+export class NovedadesComponent implements OnInit, DoCheck {
   columnas;
   source: LocalDataSource;
   settings = {
@@ -46,8 +46,9 @@ export class NovedadesComponent implements OnInit {
     },
   };
   resp;
-usuario;
-spinner = true;
+  usuario;
+  spinner = true;
+  totalRows = 0;
 
   constructor(
     private srv: ApiService,
@@ -64,6 +65,10 @@ spinner = true;
   }
 
   ngOnInit() {
+  }
+
+  ngDoCheck() {
+    this.totalRows = this.source != null ? this.source.count() : null;
   }
 
   onCustom(event) {
@@ -83,6 +88,9 @@ spinner = true;
           console.log(data);
         });
         // aqui actualizar la base para decir que ya esta tomada la orden
+        this.srv.updatesql_novedades(datos).subscribe((data) => {
+          console.log(data);
+        });
       }
     });
   }

@@ -14,3 +14,26 @@
   background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
 }
+
+.center{
+  width: auto;
+  margin: 10px auto;
+
+}
+
+.main-div{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-image: url('../assets/logoplus.png');
+  background-repeat: no-repeat; */
+}
+
+.cabecera{
+  background-color: dimgrey;
+}
+
+.card-5 {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}

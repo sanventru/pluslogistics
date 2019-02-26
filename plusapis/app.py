@@ -27,10 +27,10 @@ coll_usuarios = db.usuarios
 
 
 connstring = """DRIVER={ODBC Driver 17 for SQL Server};
-            Server=siscal.pluslogistics.com.ec,3112;
+            Server=190.110.196.148,1433;
             Database=vwe;
             UID=sa;
-            PWD=13xbnone;"""
+            PWD=13XBnone;"""
 
 connstring_total = """DRIVER={ODBC Driver 17 for SQL Server};
             Server=siscal.pluslogistics.com.ec,3112;
@@ -90,6 +90,23 @@ def images(imagename):
         return send_from_directory('imagenes', imagename)
     return send_from_directory('imagenes', imagename)
 
+@app.route('/updatesql_novedades', methods=['PUT'])
+def updatesql_novedades():
+    datos = request.json
+    # fechaactual = time.strftime("%d/%m/%Y %H:%M")
+    conn = pyodbc.connect(connstring)
+    cursor = conn.cursor()
+    sql = sqls.sql_update_novedades.format(datos['chasis'])
+    cursor.execute(sql)
+    cursor.close()
+    conn.commit()
+    conn.close()
+    resp = {}
+    resp['msg'] = 'ok'
+    response = make_response(dumps(resp, sort_keys=False, indent=2, default=json_util.default))
+    response.headers['content-type'] = 'application/json'
+    return(response)
+
 
 
 @app.route('/put_ot', methods=['PUT'])
@@ -147,7 +164,7 @@ def post_ot():
 def get_ot(estado):
     
     resp = coll_ot.find({'estado': estado})
-    if estado == 'cerrada':
+    if estado == 'cerrada' or estado == 'proformada':
         resp1 = []
         for r in resp:
             total = 0

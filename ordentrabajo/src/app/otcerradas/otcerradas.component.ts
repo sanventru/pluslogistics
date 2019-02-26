@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { ApiService } from '../api.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -10,7 +10,7 @@ import { ProformaComponent } from '../proforma/proforma.component';
   templateUrl: './otcerradas.component.html',
   styleUrls: ['./otcerradas.component.css']
 })
-export class OtcerradasComponent implements OnInit {
+export class OtcerradasComponent implements OnInit, DoCheck {
   source: LocalDataSource;
   settings = {
     columns: {
@@ -57,19 +57,31 @@ export class OtcerradasComponent implements OnInit {
     },
   };
   resp;
+  totalRows;
 
   constructor(
     private srv: ApiService,
     public dialog: MatDialog
   ) {
-      this.source = new LocalDataSource;
-      this.srv.get_ot('cerrada').subscribe((data) => {
+    this.source = new LocalDataSource;
+    this.srv.get_ot('cerrada').subscribe((data) => {
       this.source.load(data);
     });
   }
 
   ngOnInit() {
   }
+
+  ngDoCheck() {
+    this.totalRows = this.source != null ? this.source.count() : null;
+  }
+
+  estado(e) {
+    this.srv.get_ot(e).subscribe((data) => {
+      this.source.load(data);
+    });
+  }
+
   onCustom(event) {
     const datos = event.data;
     const dialogRef = this.dialog.open(ProformaComponent, {
@@ -82,7 +94,7 @@ export class OtcerradasComponent implements OnInit {
       if (result) {
         this.srv.get_ot('cerrada').subscribe((data) => {
           this.source.load(data);
-      });
+        });
         // aqui actualizar la base para decir que ya esta tomada la orden
       }
     });

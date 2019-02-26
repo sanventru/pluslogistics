@@ -1,3 +1,6 @@
+sql_update_novedades = """ update TINSPECCION_EXTERNA set i2_fechaindok=getdate(), i2_reparado=1 
+where i2_chasis='{}' and i2_responsable is not null """
+
 campos_novedades_chasis = 'ubicacion,parte,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,observacion,zona,medida'
 sql_novedades_chasis = """SELECT DISTINCT
 CASE WHEN I2_ZONA != '' OR
